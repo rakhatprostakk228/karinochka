@@ -1112,47 +1112,28 @@ function generateTests() {
         console.warn(`Недостаточно вопросов. Нужно ${totalQuestionsNeeded}, доступно ${totalQuestions}`);
     }
     
-    const shuffledAllQuestions = [...allQuestions].sort(() => Math.random() - 0.5);
-    
+    // Генерируем 5 тестов с последовательными вопросами без перемешивания
     for (let testNum = 0; testNum < numberOfTests; testNum++) {
         const testQuestions = [];
+        const startIndex = testNum * questionsPerTest;
         
-        if (totalQuestions >= totalQuestionsNeeded) {
-            const startIndex = testNum * questionsPerTest;
-            for (let i = 0; i < questionsPerTest; i++) {
-                const questionIndex = startIndex + i;
-                if (questionIndex < shuffledAllQuestions.length) {
-                    testQuestions.push(shuffledAllQuestions[questionIndex]);
-                }
-            }
-        } else {
-            for (let i = 0; i < questionsPerTest; i++) {
-                const questionIndex = (testNum * questionsPerTest + i) % shuffledAllQuestions.length;
-                testQuestions.push(shuffledAllQuestions[questionIndex]);
+        // Берем последовательные вопросы для каждого теста
+        // Тест 1: вопросы 1-20 (индексы 0-19)
+        // Тест 2: вопросы 21-40 (индексы 20-39)
+        // Тест 3: вопросы 41-60 (индексы 40-59)
+        // Тест 4: вопросы 61-80 (индексы 60-79)
+        // Тест 5: вопросы 81-100 (индексы 80-99)
+        for (let i = 0; i < questionsPerTest; i++) {
+            const questionIndex = startIndex + i;
+            if (questionIndex < allQuestions.length) {
+                // Создаем копию вопроса без изменений (не перемешиваем)
+                testQuestions.push({
+                    ...allQuestions[questionIndex]
+                });
             }
         }
         
-        const randomizedTest = testQuestions.sort(() => Math.random() - 0.5);
-        
-        const finalTest = randomizedTest.map(q => {
-            const answers = [...q.answers];
-            
-            const indices = [0, 1, 2, 3];
-            const shuffledIndices = indices.sort(() => Math.random() - 0.5);
-            
-            const shuffledAnswers = shuffledIndices.map(i => answers[i]);
-            
-            const newCorrectIndex = shuffledIndices.indexOf(q.correct);
-            
-            return {
-                ...q,
-                answers: shuffledAnswers,
-                correct: newCorrectIndex,
-                originalId: q.id
-            };
-        });
-        
-        tests.push(finalTest);
+        tests.push(testQuestions);
     }
     
     return tests;
