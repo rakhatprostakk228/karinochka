@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подготовка к экзамену</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div id="test-selection" class="screen">
+            <h1>Выберите тест</h1>
+            <div class="test-buttons">
+                <button class="test-btn" data-test="1">Тест 1</button>
+                <button class="test-btn" data-test="2">Тест 2</button>
+                <button class="test-btn" data-test="3">Тест 3</button>
+                <button class="test-btn" data-test="4">Тест 4</button>
+                <button class="test-btn" data-test="5">Тест 5</button>
+            </div>
+        </div>
+
+        <div id="test-screen" class="screen hidden">
+            <div class="test-header">
+                <h2 id="test-title">Тест 1</h2>
+                <div class="progress-bar">
+                    <div id="progress" class="progress-fill"></div>
+                </div>
+                <p class="question-counter">Вопрос <span id="current-question">1</span> из <span id="total-questions">20</span></p>
+            </div>
+
+            <div class="question-container">
+                <div class="question-text" id="question-text"></div>
+                <div class="answers-container" id="answers-container"></div>
+                <div class="result-message" id="result-message"></div>
+            </div>
+
+            <div class="navigation">
+                <button id="prev-btn" class="nav-btn" disabled>← Предыдущий</button>
+                <button id="next-btn" class="nav-btn">Следующий →</button>
+                <button id="finish-btn" class="nav-btn finish-btn hidden">Завершить тест</button>
+            </div>
+        </div>
+
+        <div id="results-screen" class="screen hidden">
+            <h1>Результаты теста</h1>
+            <div class="results-summary">
+                <div class="result-stat">
+                    <span class="stat-label">Правильных ответов:</span>
+                    <span class="stat-value" id="correct-count">0</span>
+                </div>
+                <div class="result-stat">
+                    <span class="stat-label">Неправильных ответов:</span>
+                    <span class="stat-value" id="incorrect-count">0</span>
+                </div>
+                <div class="result-stat">
+                    <span class="stat-label">Процент правильных:</span>
+                    <span class="stat-value" id="percentage">0%</span>
+                </div>
+            </div>
+            <div class="results-details" id="results-details"></div>
+            <button id="back-to-tests" class="nav-btn">Вернуться к выбору теста</button>
+        </div>
+    </div>
+
+    <script src="questions.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
+
