@@ -1101,6 +1101,38 @@ const allQuestions = [
     }
 ];
 
+// Функция для перемешивания массива (алгоритм Fisher-Yates)
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
+// Функция для перемешивания ответов в вопросе с обновлением индекса правильного ответа
+function shuffleAnswers(question) {
+    const originalCorrectIndex = question.correct;
+    const originalAnswers = [...question.answers];
+    
+    // Создаем массив индексов и перемешиваем его
+    const indices = originalAnswers.map((_, index) => index);
+    const shuffledIndices = shuffleArray(indices);
+    
+    // Перемешиваем ответы согласно новым индексам
+    const shuffledAnswers = shuffledIndices.map(oldIndex => originalAnswers[oldIndex]);
+    
+    // Находим новый индекс правильного ответа
+    const newCorrectIndex = shuffledIndices.indexOf(originalCorrectIndex);
+    
+    return {
+        ...question,
+        answers: shuffledAnswers,
+        correct: newCorrectIndex
+    };
+}
+
 function generateTests() {
     const tests = [];
     const totalQuestions = allQuestions.length;
@@ -1112,7 +1144,7 @@ function generateTests() {
         console.warn(`Недостаточно вопросов. Нужно ${totalQuestionsNeeded}, доступно ${totalQuestions}`);
     }
     
-    // Генерируем 5 тестов с последовательными вопросами без перемешивания
+    // Генерируем 5 тестов с перемешанными вопросами и ответами
     for (let testNum = 0; testNum < numberOfTests; testNum++) {
         const testQuestions = [];
         const startIndex = testNum * questionsPerTest;
@@ -1126,14 +1158,16 @@ function generateTests() {
         for (let i = 0; i < questionsPerTest; i++) {
             const questionIndex = startIndex + i;
             if (questionIndex < allQuestions.length) {
-                // Создаем копию вопроса без изменений (не перемешиваем)
-                testQuestions.push({
-                    ...allQuestions[questionIndex]
-                });
+                // Создаем копию вопроса и перемешиваем ответы
+                const questionWithShuffledAnswers = shuffleAnswers(allQuestions[questionIndex]);
+                testQuestions.push(questionWithShuffledAnswers);
             }
         }
         
-        tests.push(testQuestions);
+        // Перемешиваем порядок вопросов в тесте
+        const shuffledTestQuestions = shuffleArray(testQuestions);
+        
+        tests.push(shuffledTestQuestions);
     }
     
     return tests;
