@@ -23,10 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    document.getElementById('close-modal-btn').addEventListener('click', () => {
-        closeTest5Modal();
-    });
-    
     document.getElementById('modal-ok-btn').addEventListener('click', () => {
         closeTest5Modal();
     });
