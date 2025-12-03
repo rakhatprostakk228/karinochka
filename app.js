@@ -6,7 +6,16 @@ let userAnswers = [];
 let testResults = [];
 
 document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+    }
+    
     tests = generateTests();
+    
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+        toggleTheme();
+    });
     
     document.querySelectorAll('.test-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -242,5 +251,11 @@ function showTest5Modal() {
 function closeTest5Modal() {
     document.getElementById('test5-modal').classList.add('hidden');
     document.body.style.overflow = 'auto';
+}
+
+function toggleTheme() {
+    document.body.classList.toggle('light-theme');
+    const isLight = document.body.classList.contains('light-theme');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
 }
 
