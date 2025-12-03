@@ -14,8 +14,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             const testNum = parseInt(e.target.dataset.test);
-            startTest(testNum);
+            
+            if (testNum === 5) {
+                showTest5Modal();
+            } else {
+                startTest(testNum);
+            }
         });
+    });
+    
+    document.getElementById('close-modal-btn').addEventListener('click', () => {
+        closeTest5Modal();
+    });
+    
+    document.getElementById('modal-ok-btn').addEventListener('click', () => {
+        closeTest5Modal();
+    });
+    
+    document.getElementById('test5-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'test5-modal') {
+            closeTest5Modal();
+        }
     });
     
     document.getElementById('prev-btn').addEventListener('click', () => {
@@ -217,5 +236,15 @@ function closeCurrentTest() {
     }
     
     showTestSelection();
+}
+
+function showTest5Modal() {
+    document.getElementById('test5-modal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeTest5Modal() {
+    document.getElementById('test5-modal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
 }
 
