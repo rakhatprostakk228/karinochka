@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     document.querySelectorAll('.test-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
+            if (e.target.classList.contains('disabled')) {
+                return;
+            }
             const testNum = parseInt(e.target.dataset.test);
             startTest(testNum);
         });
@@ -37,6 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     document.getElementById('back-to-tests').addEventListener('click', () => {
         showTestSelection();
+    });
+    
+    document.getElementById('close-test-btn').addEventListener('click', () => {
+        closeCurrentTest();
     });
 });
 
@@ -198,5 +205,17 @@ function showTestSelection() {
     document.getElementById('test-selection').classList.remove('hidden');
     document.getElementById('test-screen').classList.add('hidden');
     document.getElementById('results-screen').classList.add('hidden');
+}
+
+function closeCurrentTest() {
+    const answeredCount = userAnswers.filter(a => a !== null).length;
+    
+    if (answeredCount > 0) {
+        if (!confirm(`Вы уже ответили на ${answeredCount} вопросов. Вы уверены, что хотите закрыть тест? Весь прогресс будет потерян.`)) {
+            return;
+        }
+    }
+    
+    showTestSelection();
 }
 
